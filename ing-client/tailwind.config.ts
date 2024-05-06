@@ -19,6 +19,8 @@ const config = {
     },
     extend: {
       colors: {
+        customBlue: "#243CCE",
+        customRed: "#DB3E54",
         dark: "#08080A",
         gray: "#8B8C95",
         midgray: "#E3E4E7",

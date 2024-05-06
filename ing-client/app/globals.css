@@ -74,3 +74,7 @@
       @apply bg-background text-foreground;
     }
   }
+
+.heart:hover {
+    filter: invert(38%) sepia(16%) saturate(5605%) hue-rotate(321deg) brightness(87%) contrast(96%);;
+}
