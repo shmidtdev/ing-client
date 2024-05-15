@@ -17,6 +17,8 @@ export default function FilterSingleSection({name, groups} : FilterSingleSection
   const {isChanged} = useContext(CheckAreaContext)
   const {handleUpdate} = useContext(ApplicationContext)
   
+  let section = groups[name].sort((a: Characteristic, b: Characteristic) => Number.parseFloat(a.valueEng) - Number.parseFloat(b.valueEng))
+  
   return (
     <AccordionItem value={name} key={name} className="relative">
       <AccordionTrigger className="font-medium flex justify-between">
@@ -25,7 +27,7 @@ export default function FilterSingleSection({name, groups} : FilterSingleSection
       <AccordionContent>
         <div className="max-h-[200px]">
           <ScrollArea className="h-[200px] py-2 px-4">
-            {groups[name].map((characteristic: Characteristic) => (
+            {section.map((characteristic: Characteristic) => (
               <CheckItem key={characteristic.id} characteristic={characteristic}/>
             ))}
           </ScrollArea>

@@ -4,11 +4,13 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {ApplicationContext, ApplicationContextProvider} from "@/app/ApplicationContext";
+import {OrderContext, OrderContextProvider} from "@/app/OrderContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Инж-Импорт Групп"
+  title: "Инж-Импорт Групп",
+  icons: ["../favicon.svg"]
 };
 
 export default function RootLayout({
@@ -19,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ApplicationContextProvider>
-          <Navbar />
-          {children}
-          <Footer />
-        </ApplicationContextProvider>
+        <OrderContextProvider>
+          <ApplicationContextProvider>
+            <Navbar />
+              {children}
+            <Footer />
+          </ApplicationContextProvider>
+        </OrderContextProvider>
       </body>
     </html>
   );

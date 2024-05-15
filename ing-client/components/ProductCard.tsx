@@ -3,6 +3,7 @@
 import {HeartIcon} from "@/Icons";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
+import {BuyButton} from "@/components/BuyButton";
 
 type ProductCardProps = {
   product: Product
@@ -23,15 +24,17 @@ export default function ProductCard({product} : ProductCardProps){
         <div className="p-2">
           <div className="font-semibold text-lg">{product.title}</div>
           <div className="text-sm">
-            не передаются характеристики
             {product.characteristics.map((characteristic) => (
-              <div>
+              <div key={characteristic.id}>
                 {characteristic.value}
               </div>
             ))}
           </div>
-          {product.price !== 0 && <div className="font-bold text-xl mt-2">{product.price} р.</div>}
-          {product.price === 0 && <div className="font-bold text-sm mt-2">Уточняйте цену у менеджера</div>}
+          <div className="flex gap-3 mt-2">
+            {product.oldPrice !== 0 && <div className="font-bold text-xl line-through">{product.oldPrice} р.</div>}
+            {product.price !== 0 && <div className="font-bold text-xl">{product.price} р.</div>}
+            {product.price === 0 && <div className="font-bold text-sm">Уточняйте цену у менеджера</div>}
+          </div>
         </div>
       </Link>
       <div className="flex justify-between gap-2 px-2">
@@ -40,9 +43,7 @@ export default function ProductCard({product} : ProductCardProps){
         }}>
           Подробнее
         </Button>
-        <Button className="w-1/2" onClick={event => event.stopPropagation()}>
-          В корзину
-        </Button>
+        <BuyButton product={product} />
       </div>
     </div>
   )

@@ -1,1 +1,1 @@
-﻿export const host = "http://localhost:5162"
+﻿export const host = "http://localhost"

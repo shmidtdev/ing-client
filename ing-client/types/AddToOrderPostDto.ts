@@ -1,0 +1,3 @@
+﻿type AddToOrderPostDto = {
+  productId: string
+}

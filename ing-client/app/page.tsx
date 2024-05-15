@@ -1,13 +1,10 @@
-import Image from "next/image";
 import Container from "@/components/Container";
 import {Button} from "@/components/ui/button";
-import CategoryCard from "@/components/CategoryCard";
-import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import Link from "next/link";
 import {
   ConsultationIcon,
   DeliveryIcon,
-  DesignIcon, HeartIcon,
+  DesignIcon,
   ManufactoryIcon,
   RightArrowIcon,
   RightArrowWhiteIcon
@@ -89,12 +86,7 @@ export default function Home() {
             </Button>
           </div>
           <div className="flex justify-between gap-4">
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {/*<ProductCard product={} />*/}
           </div>
         </Container>
       </section>
@@ -159,11 +151,11 @@ export default function Home() {
             </Button>
           </div>
           <div className="flex justify-between">
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
-            <ProductCard/>
+            {/*<ProductCard/>*/}
+            {/*<ProductCard/>*/}
+            {/*<ProductCard/>*/}
+            {/*<ProductCard/>*/}
+            {/*<ProductCard/>*/}
           </div>
         </Container>
       </section>

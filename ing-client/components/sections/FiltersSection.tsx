@@ -1,42 +1,42 @@
-﻿"use client"
-
-import {Checkbox} from "@/components/ui/checkbox";
-import {ScrollArea} from "@/components/ui/scroll-area";
-import Link from "next/link";
+﻿import Link from "next/link";
 import PriceFilter from "@/components/PriceFilter";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
-import CheckItem from "@/components/CheckItem";
-import {CheckAreaContext, CheckAreaContextProvider} from "@/app/CheckAreaContext";
+import {Accordion} from "@/components/ui/accordion";
+import {CheckAreaContextProvider} from "@/app/CheckAreaContext";
 import FilterSingleSection from "@/app/FilterSingleSection";
 
 type FiltersSectionProps = {
   characteristics: Characteristic[],
   categories: Category[],
+  minPrice?: number,
   maxPrice?: number
 }
 
-export default function FiltersSection({characteristics, categories, maxPrice}: FiltersSectionProps) {
-  const groups: any = characteristics.reduce((groups, item) => ({
+export default function FiltersSection({characteristics, categories, minPrice, maxPrice}: FiltersSectionProps) {
+  const groups: any = characteristics.reduce((groups: any, item: Characteristic) => ({
     ...groups,
     [item.name]: [...(groups[item.name] || []), item]
   }), {});
 
   return (
-    <div className="ml-4 min-w-[300px]">
+    <div className="min-w-[350px] bg-white py-6 px-8 rounded-lg h-fit">
+        {categories.length > 0 &&
       <div className="mb-6">
         <h2 className="text-lg font-semibold mb-2">
           Категории
         </h2>
-        <div className="flex flex-col text-sm ml-4 font-semibold">
-          {categories.map((category) => (
-            <Link href={`../catalog/${category.nameEng}`} key={category.nameEng}
-                  className="w-fit hover:text-customBlue">
-              {category.name}
-            </Link>
-          ))}
-        </div>
+          <div className="flex flex-col text-sm ml-4 font-semibold">
+            {categories.map((category) => (
+              <Link href={`../catalog/${category.nameEng}`} key={category.nameEng}
+                    className="w-fit hover:text-customBlue">
+                {category.name}
+              </Link>
+            ))}
+          </div>
       </div>
-      <PriceFilter maxPrice={maxPrice}/>
+        }
+      {maxPrice > 0 && 
+        <PriceFilter maxPrice={maxPrice} minPrice={minPrice}/>
+      }
       <div>
         <Accordion type="single" collapsible>
           {Object.keys(groups).map((key) => (

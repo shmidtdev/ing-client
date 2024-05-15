@@ -1,17 +1,18 @@
 ﻿import Container from "@/components/Container";
 import AddressModal from "@/components/AddressModal";
 import Link from "next/link";
-import {Input} from "@/components/ui/input";
-import {CartIcon, HeartIcon, PhoneIcon} from "@/Icons";
-import CatalogButton from "@/components/CatalogButton";
+import {HeartIcon, PhoneIcon} from "@/Icons";
+import CatalogOverlay from "@/components/CatalogOverlay";
+import CartOverlay from "@/components/CartOverlay";
+import HeaderSearch from "@/components/HeaderSearch";
 
 export default function Navbar(){
   return (
-    <div className="h-[110px]">
-      <div className="w-full bg-white fixed z-[100]">
-        <div className="bg-midgray py-1 text-sm">
+    <div className="h-[120px]">
+      <div className="w-screen drop-shadow-sm fixed z-[1000]">
+        <div className="bg-midgray py-1 text-sm h-[40px] flex flex-col justify-center pr-8">
           <Container>
-            <div className="flex flex-row justify-between my-1">
+            <div className="flex flex-row justify-between h-fit">
               <div className="border-gray border-r-2 w-[300px]">
                 <AddressModal />
               </div>
@@ -29,18 +30,19 @@ export default function Navbar(){
             </div>
           </Container>
         </div>
-        <div className="my-2 h-[60px] flex flex-col justify-center">
+        <div className="h-[80px] flex flex-col justify-center bg-white pr-8">
           <Container>
             <div className="flex gap-4 justify-between">
               <div className="flex">
                 <div className="my-auto w-[300px]">
-                  <Link href="/">ИНЖ-ИМПОРТ ГРУПП</Link>
-                </div>
-                <div className="my-auto">
-                  <CatalogButton />
+                  <Link href="/" className="w-fit flex gap-4">
+                    <img src="/favicon.svg" className="h-[40px]"/>
+                    <div className="my-auto">ИНЖ ИМПОРТ ГРУПП</div>
+                  </Link>
                 </div>
               </div>
-              <Input placeholder="Что будем искать?"/>
+              <CatalogOverlay />
+              <HeaderSearch />
               <div className="flex gap-4 my-auto">
                 <div className="flex flex-col bg-midgray rounded-full w-[40px] hover:cursor-pointer hover:bg-gray">
                   <div className="m-auto">
@@ -55,14 +57,7 @@ export default function Navbar(){
                     Избранное
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <div className="mx-auto">
-                    <CartIcon/>
-                  </div>
-                  <div className="text-[10px]">
-                    Корзина
-                  </div>
-                </div>
+                <CartOverlay />
               </div>
             </div>
           </Container>

@@ -1,15 +1,15 @@
-﻿"use server"
+﻿"use client"
 
 import Container from "@/components/Container";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import CategoryCard from "@/components/CategoryCard";
 import axios from "axios";
 import {host} from "@/env";
+import {useContext} from "react";
+import {ApplicationContext} from "@/app/ApplicationContext";
 
-export default async function CategoryCarousel(){
-  let categories : Category[] = [];
-  
-  await axios.get(`${host}/catalog/GetCategoryChildrenInfo?categoryName=Catalog`).then(res => categories = res.data)
+export default  function CategoryCarousel(){
+  const {categories} = useContext(ApplicationContext)
   
   return (
     <section className="mt-12 w-full px-12">
