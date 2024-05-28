@@ -1,0 +1,3 @@
+﻿type AddToWishListPostDto = {
+  productId: string
+}

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {ApplicationContext, ApplicationContextProvider} from "@/app/ApplicationContext";
 import {OrderContext, OrderContextProvider} from "@/app/OrderContext";
+import OffCanvasBlur from "@/components/OffcanvasBlur";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +24,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <OrderContextProvider>
           <ApplicationContextProvider>
+            <OffCanvasBlur />
             <Navbar />
-              {children}
+            {children}
             <Footer />
           </ApplicationContextProvider>
         </OrderContextProvider>

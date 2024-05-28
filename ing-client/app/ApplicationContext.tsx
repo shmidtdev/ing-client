@@ -10,7 +10,10 @@ interface IApplicationContext {
   handleMinPriceChange: (minPrice: number) => void,
   handleMaxPriceChange: (maxPrice: number) => void,
   handleUpdate: () => void,
-  categories: Category[]
+  categories: Category[],
+  offCanvasOpen: boolean,
+  handleOffCanvas: (isOpen: boolean) => void
+  user?: User
 }
 
 export const ApplicationContext = createContext<IApplicationContext>({
@@ -18,14 +21,18 @@ export const ApplicationContext = createContext<IApplicationContext>({
   handleMinPriceChange: (_minPrice: number) => {throw Error("Not implemented")},
   handleMaxPriceChange: (_maxPrice: number) => {throw Error("Not implemented")},
   handleUpdate: () => {throw Error("Not Implemented")},
-  categories: []
+  categories: [],
+  offCanvasOpen: false,
+  handleOffCanvas: (_isOpen) => {throw Error("Not implemented")},
+  user: undefined
 })
 
 export const ApplicationContextProvider = ({children} : any) => {
   const [characteristics, setCharacteristics] = useState<Characteristic[]>([])
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(0)
-  const [isChanged, setIsChanged] = useState(false)
+  const [offCanvasOpen, setOffCanvasOpen] = useState(false)
+  const [user, setUser] = useState<User>({isAuthorized: false, name: "", email: "", phone: ""})
   
   const router = useRouter()
   const pathName = usePathname()
@@ -35,7 +42,15 @@ export const ApplicationContextProvider = ({children} : any) => {
 
   useEffect(() => {
     axios.get(`${host}/api/catalog/GetCategoryChildrenInfo?categoryName=catalog`).then(res => setCategories(res.data))
+    axios.get(`${host}/api/user/getUser`).then(res => {
+      console.log(res.data)
+      setUser(res.data)
+    })
   }, []);
+  
+  const handleOffCanvas = () => {
+    setOffCanvasOpen(!offCanvasOpen)
+  }
   
   const handleCheck = (characteristic: Characteristic) => {
     if (characteristics.includes(characteristic)){
@@ -83,7 +98,7 @@ export const ApplicationContextProvider = ({children} : any) => {
   }
   
   return (
-    <ApplicationContext.Provider value={{handleCheck, handleUpdate, handleMinPriceChange, handleMaxPriceChange, categories}}>
+    <ApplicationContext.Provider value={{handleCheck, handleUpdate, handleMinPriceChange, handleMaxPriceChange, categories, offCanvasOpen, handleOffCanvas, user}}>
       {children}
     </ApplicationContext.Provider>
   )

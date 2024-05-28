@@ -3,6 +3,7 @@ import PriceFilter from "@/components/PriceFilter";
 import {Accordion} from "@/components/ui/accordion";
 import {CheckAreaContextProvider} from "@/app/CheckAreaContext";
 import FilterSingleSection from "@/app/FilterSingleSection";
+import {Suspense} from "react";
 
 type FiltersSectionProps = {
   characteristics: Characteristic[],
@@ -12,7 +13,7 @@ type FiltersSectionProps = {
 }
 
 export default function FiltersSection({characteristics, categories, minPrice, maxPrice}: FiltersSectionProps) {
-  const groups: any = characteristics.reduce((groups: any, item: Characteristic) => ({
+  const groups: any = characteristics?.reduce((groups: any, item: Characteristic) => ({
     ...groups,
     [item.name]: [...(groups[item.name] || []), item]
   }), {});
@@ -34,8 +35,10 @@ export default function FiltersSection({characteristics, categories, minPrice, m
           </div>
       </div>
         }
-      {maxPrice > 0 && 
-        <PriceFilter maxPrice={maxPrice} minPrice={minPrice}/>
+      {(maxPrice ?? 0) > 0 && 
+          <Suspense>
+            <PriceFilter maxPrice={maxPrice} minPrice={minPrice}/>
+          </Suspense>
       }
       <div>
         <Accordion type="single" collapsible>

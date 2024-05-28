@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {Suspense} from "react";
 
 export default function ProductOrderSelect() {
   const searchParams = useSearchParams()
@@ -29,17 +30,19 @@ export default function ProductOrderSelect() {
   }
 
   return (
-    <div className="w-fit ml-auto">
-      <Select onValueChange={(x) => handleClick(x)}>
-        <SelectTrigger className="w-[220px]">
-          <SelectValue placeholder={orders[orderType]}/>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="0">По названию</SelectItem>
-          <SelectItem value="1">По цене</SelectItem>
-          <SelectItem value="2">По характеристикам</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
+    <Suspense>
+      <div className="w-fit ml-auto">
+        <Select onValueChange={(x) => handleClick(x)}>
+          <SelectTrigger className="w-[220px]">
+            <SelectValue placeholder={orders[orderType]}/>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">По названию</SelectItem>
+            <SelectItem value="1">По цене</SelectItem>
+            <SelectItem value="2">По характеристикам</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </Suspense>
   )
 }

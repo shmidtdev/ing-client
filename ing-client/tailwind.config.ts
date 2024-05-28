@@ -26,6 +26,8 @@ const config = {
         gray: "#8B8C95",
         midgray: "#E3E4E7",
         lightgray: "F7F7F7",
+        customGray: "rgb(240 240 240)",
+        customDarkerGray: "rgb(229 229 229)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

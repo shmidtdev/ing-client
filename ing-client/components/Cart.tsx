@@ -10,6 +10,7 @@ import {OrderContext} from "@/app/OrderContext";
 
 export default function Cart(){
   const {order} = useContext(OrderContext)
+  let movements = order?.orderContextItems.map((x) => x.productMovement) ?? []
   
   return (
   <Sheet>
@@ -43,8 +44,8 @@ export default function Cart(){
           </div>
         </div>
         <div>
-          {order?.productMovements.map((movement) => (
-            <div className="flex">
+          {movements.map((movement) => (
+            <div className="flex" key={movement.id}>
               <div className="text-sm">
                 {movement.product.title}
               </div>

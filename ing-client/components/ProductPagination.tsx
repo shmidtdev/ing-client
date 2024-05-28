@@ -6,6 +6,7 @@ import {Pagination, PaginationItemType} from "@nextui-org/pagination";
 import {Button} from "@/components/ui/button";
 import {ChevronIcon} from "@nextui-org/shared-icons";
 import {cn} from "@nextui-org/system-rsc";
+import {Suspense} from "react";
 
 type ProductPaginationProps = {
   pagesAmount: number
@@ -29,20 +30,22 @@ export default function ProductPagination({pagesAmount} : ProductPaginationProps
   }
 
   return (
-    <div className="w-full flex justify-center gap-3 mt-20">
-      <Button
-        size="sm"
-        onClick={() => handleClick((currentPage - 1).toString())}
-      >
-        Назад
-      </Button>
-      <Pagination className="overflow-hidden" total={pagesAmount} page={currentPage} siblings={4} onChange={(page) => handleClick(page.toString())}/>
-      <Button
-        size="sm"
-        onClick={() => handleClick((currentPage + 1).toString())}
-      >
-        Вперед
-      </Button>
-    </div>
+    <Suspense>
+      <div className="w-full flex justify-center gap-3 mt-20">
+        <Button
+          size="sm"
+          onClick={() => handleClick((currentPage - 1).toString())}
+        >
+          Назад
+        </Button>
+        <Pagination className="overflow-hidden" total={pagesAmount} page={currentPage} siblings={4} onChange={(page) => handleClick(page.toString())}/>
+        <Button
+          size="sm"
+          onClick={() => handleClick((currentPage + 1).toString())}
+        >
+          Вперед
+        </Button>
+      </div>
+    </Suspense>
   )
 }

@@ -39,7 +39,7 @@ export default function SubscriptionForm(){
                 <FormControl>
                   <Input placeholder="Ваша почта" {...field} />
                 </FormControl>
-                <Button type="submit" variant="custom">
+                <Button type="submit" variant="customBlue">
                   <RightArrowWhiteIcon />
                 </Button>
               </div>

@@ -1,29 +1,30 @@
-﻿import axios from "axios";
-import {host} from "@/env";
-import Link from "next/link";
+﻿"use client"
+
 import Container from "@/components/Container";
-import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Filter} from "lucide-react";
-import {Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator} from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator
+} from "@/components/ui/breadcrumb";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import Link from "next/link";
+import {useContext} from "react";
+import {OrderContext} from "@/app/OrderContext";
 
-export default async function Search({params, searchParams}: {
-  params: { slug: string },
-  searchParams: { [key: string]: string | string[] | undefined }
-}) {
-  let products: Product[] = []
-
-  await axios.get(`${host}/api/product/GetProductsBySubstring?substring=${searchParams["substring"]}`)
-    .then(res => {
-      products = res.data
-    })
+export default function WishList(){
+  const {wishList} = useContext(OrderContext)
   
-  let characteristics: Characteristic[] = []; 
-  products.map((p) => p.characteristics.map((x) => {
+  let products = wishList?.productMovements?.map((x) => x.product)
+
+  let characteristics: Characteristic[] = [];
+  products?.map((p) => p.characteristics.map((x) => {
     if(!characteristics.find(y => y.nameEng == x.nameEng))
       characteristics.push(x)
   }))
   
-  return (
+  return(
     <div className="bg-customGray pb-12">
       <Container>
         <div className="pt-8 pb-8">
@@ -35,11 +36,11 @@ export default async function Search({params, searchParams}: {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator/>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/">Поиск</BreadcrumbLink>
+                  <BreadcrumbLink href="/wishList">Сохраненные товары</BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-            <h2 className="text-4xl mt-4 font-medium">Поиск товаров</h2>
+            <h2 className="text-4xl mt-4 font-medium">Список сохраненных товаров</h2>
           </div>
         </div>
         <div className="bg-white rounded-lg p-8 relative">
@@ -49,35 +50,35 @@ export default async function Search({params, searchParams}: {
                 <TableHead></TableHead>
                 <TableHead>Название</TableHead>
                 {characteristics.map((characteristic) => (
-                  <TableHead key={characteristic.id}>{characteristic.name}</TableHead>
+                  <TableHead key={characteristic.nameEng}>{characteristic.name}</TableHead>
                 ))}
                 <TableHead>Цена</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {products.map((product) => (
+              {products?.map((product) => (
                 <TableRow key={product.id}>
                   <TableCell>
                     <img className="w-[40px]" src="/Images/placeholder.png"/>
                   </TableCell>
                   <TableCell>
                     <Link href={`../product/${product.id}`} className="flex gap-4 font-medium hover:text-customBlue">
-                      <div >{product.title}</div>
+                      <div>{product.title}</div>
                     </Link>
                   </TableCell>
                   {characteristics.map((x) => {
                     let c = product.characteristics.find(f => f.nameEng === x.nameEng)
-                    
+
                     if (c)
-                      return <TableCell key={x.id}>{c.value}</TableCell>
-                    
-                    return <TableCell key={x.id}>--</TableCell>
+                      return <TableCell key={x.nameEng}>{c.value}</TableCell>
+
+                    return <TableCell key={x.nameEng}>--</TableCell>
                   })}
-                  {(product?.price ?? 0) > 0 && 
-                    <TableCell>{product.price}</TableCell>
+                  {(product?.price ?? 0) > 0 &&
+                      <TableCell>{product.price}</TableCell>
                   }
-                  {(product?.price ?? 0) <= 0 && 
-                    <TableCell>--</TableCell>
+                  {(product?.price ?? 0) <= 0 &&
+                      <TableCell>--</TableCell>
                   }
                 </TableRow>
               ))}

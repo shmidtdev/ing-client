@@ -9,7 +9,8 @@ export default function HeaderSearch(){
   
   const ref = createRef<HTMLInputElement>()
   
-  const handleKeyDown = (e : KeyboardEvent) => {
+  // @ts-ignore
+  const handleKeyDown = (e : KeyboardEvent<HTMLInputElement>) => {
     if(e.key === 'Enter'){
       const current = new URLSearchParams();
 
@@ -24,7 +25,7 @@ export default function HeaderSearch(){
   
   return (
     <>
-      <Input placeholder="Что будем искать?" ref={ref} onKeyDown={handleKeyDown}/>
+      <Input placeholder="Что будем искать?" ref={ref} onKeyDown={e => handleKeyDown(e)}/>
     </>
   )
 }

@@ -1,6 +1,6 @@
 ﻿"use client"
 
-import {createRef, useContext, useState} from "react";
+import {createRef, Suspense, useContext, useState} from "react";
 import {ApplicationContext} from "@/app/ApplicationContext";
 import {CheckAreaContext} from "@/app/CheckAreaContext";
 import {useSearchParams} from "next/navigation";
@@ -24,16 +24,18 @@ export default function CheckItem({characteristic}: CheckItemProps){
   const ref = createRef<HTMLInputElement>()
   
   return (
-    <div className="flex gap-1 text-sm">
-      <div className="flex flex-col justify-center">
-        <input type="checkbox" defaultChecked={isChecked} ref={ref} onClick={() => {
-          handleCheck(characteristic)
-          handleChange()
-        }}/>
+    <Suspense>
+      <div className="flex gap-1 text-sm">
+        <div className="flex flex-col justify-center">
+          <input type="checkbox" defaultChecked={isChecked} ref={ref} onClick={() => {
+            handleCheck(characteristic)
+            handleChange()
+          }}/>
+        </div>
+        <div>
+          {characteristic.value}
+        </div>
       </div>
-      <div>
-        {characteristic.value}
-      </div>
-    </div>
+    </Suspense>
   )
 }

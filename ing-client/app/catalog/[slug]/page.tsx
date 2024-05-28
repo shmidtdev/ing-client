@@ -23,17 +23,25 @@ export default async function CatalogSlugPage({params, searchParams}: {
   let products : Product[] = [];
   let characteristics: Characteristic[] = [];
   let categories: Category[] = [];
-  let currentCategory: Category;
   let pages: number = 0;
   let maxPrice = 0;
   let breadCrumbs: BreadCrumb[] = []
+  
+  let currentCategory: Category = {
+    id: "",
+    name: "",
+    nameEng: "",
+    imageLink: "",
+    amount: 0
+  };
 
   let postDto: CatalogPostDto = {
-    page: searchParams["page"] ?? "1",
+    page: searchParams["page"]?.toString() ?? "1",
+    // @ts-ignore
     params: searchParams,
     categoryName: params.slug,
-    priceMax: searchParams["priceMax"],
-    priceMin: searchParams["priceMin"]
+    priceMax: searchParams["priceMax"]?.toString(),
+    priceMin: searchParams["priceMin"]?.toString()
   }
   
   await axios.post(`${host}/api/catalog/getCatalog`, postDto)
@@ -51,7 +59,7 @@ export default async function CatalogSlugPage({params, searchParams}: {
     });
   
   return (
-    <div className="pb-20 bg-neutral-100">
+    <div className="pb-20 bg-customGray">
       <div className="pt-8">
         <Container>
           <div className="p-8 bg-white rounded-lg">
@@ -66,7 +74,7 @@ export default async function CatalogSlugPage({params, searchParams}: {
                     if (index === breadCrumbs.length - 1){
                       return (
                         <>
-                          <BreadcrumbItem>
+                          <BreadcrumbItem key={index}>
                             <BreadcrumbLink href={`../${breadCrumb.slug}`}>{breadCrumb.name}</BreadcrumbLink>
                           </BreadcrumbItem>
                         </>

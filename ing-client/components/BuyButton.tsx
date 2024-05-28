@@ -16,7 +16,7 @@ export function BuyButton({product}: BuyButtonProps){
   const [button, setButton] = useState<JSX.Element>(<ToCartButton product={product} />)
 
   useEffect(() => {
-    if(order?.orderContextItems.find(x => x.productMovement.product.id == product.id) !== undefined)
+    if(order?.orderContextItems?.find(x => x.productMovement.product.id == product.id) !== undefined)
       setButton(<UpdateButtonSet product={product} />)
     else
       setButton(<ToCartButton product={product} />)
@@ -43,9 +43,7 @@ export function ToCartButton({product}: BuyButtonProps){
   }
 
   return (
-    <div>
       <Button className="w-full" onClick={handlePost}>В корзину</Button>
-    </div>
   )
 }
 

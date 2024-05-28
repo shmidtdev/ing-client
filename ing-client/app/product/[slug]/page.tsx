@@ -12,21 +12,42 @@ import {
 } from "@/components/ui/breadcrumb";
 import ImageCarousel from "@/components/productPage/ImageCarousel";
 import {BuyButton} from "@/components/BuyButton";
+import RecommendedSection from "@/components/sections/RecommendedSection";
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
+import ProductCard from "@/components/ProductCard";
 
 export default async function ProductPage({params, searchParams}: {
   params: { slug: string },
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  let dto: ProductPageContextDto;
+  let dto: ProductPageContextDto = {
+    product: {
+      id: "",
+      title: "",
+      titleEng: "",
+      imageLinks: undefined,
+      price: undefined,
+      oldPrice: undefined,
+      isRecommended: false,
+      category: "",
+      rating: undefined,
+      characteristics: []
+    },
+    breadCrumbs: []
+  };
 
   await axios.get(`${host}/api/product/getProduct?id=${params.slug}`)
     .then(res => dto = res.data);
+
+  let products: Product[] = []
+
+  await axios.get(`${host}/api/product/GetRecommended`).then(res => products = res.data)
 
   let product = dto.product;
   let breadCrumbs = dto.breadCrumbs;
 
   return (
-    <div className="bg-neutral-100 pt-8">
+    <div className="bg-customGray pt-8">
       <Container>
         <div className="bg-white rounded-lg p-8">
           <div className="">
@@ -63,11 +84,11 @@ export default async function ProductPage({params, searchParams}: {
         </div>
         <div className="flex justify-between mt-8">
           <div className="w-[70%]">
-            <ImageCarousel images={product.imageLinks ?? []}/>
+            <ImageCarousel productId={product.id} images={product.images}/>
             <div className="w-full bg-white rounded-lg my-8 p-8">
-              <h3 className="text-3xl mb-6">Характеристики</h3>
+              <h3 className="text-2xl mb-6">Характеристики</h3>
               {product.characteristics.map((characteristic) => (
-                <div key={characteristic.valueEng} className="flex justify-between text-lg mb-2">
+                <div key={characteristic.valueEng} className="flex justify-between text-md mb-2">
                   <div>
                     {characteristic.name}
                   </div>
@@ -77,16 +98,37 @@ export default async function ProductPage({params, searchParams}: {
                 </div>
               ))}
             </div>
+            <div className="bg-white rounded-lg h-fit py-8 px-8 mb-8">
+              <h2 className="text-lg font-medium mb-8">Рекомендуемые товары</h2>
+              <Carousel
+                opts={{
+                  align: "start",
+                }}
+                className="px-16"
+              >
+                <CarouselContent className="">
+                  {products.map((product, index) => (
+                    <CarouselItem key={index} className="basis-1/4">
+                      <div>
+                        <ProductCard product={product}/>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious/>
+                <CarouselNext/>
+              </Carousel>
+            </div>
           </div>
           <div>
             <div className="bg-white p-8 rounded-lg ml-8 mb-8 sticky top-[150px]">
               <div className="text-3xl font-semibold">
                 {product.price} р.
               </div>
-              <div className="my-4 border-b-2 border-neutral-200 pb-2">
+              <div className="my-4 border-b-2 border-customDarkerGray pb-2">
                 Можно оплатить картой.
               </div>
-              <div className="my-4 border-b-2 border-neutral-200 pb-2">
+              <div className="my-4 border-b-2 border-customDarkerGray pb-2">
                 <div className="mb-2">Условия поставки:</div>
                 <div className="ml-2">
                   <div>
@@ -100,7 +142,7 @@ export default async function ProductPage({params, searchParams}: {
                   </div>
                 </div>
               </div>
-              <div className="my-4 border-b-2 border-neutral-200 pb-2">
+              <div className="my-4 border-b-2 border-customDarkerGray pb-2">
                 <div className="mb-2 cursor-pointer text-customBlue">Требуется объектная скидка? Отправьте заявку.</div>
               </div>
               <div className="mt-8">

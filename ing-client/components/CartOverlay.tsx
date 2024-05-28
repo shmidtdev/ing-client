@@ -1,31 +1,60 @@
 ﻿"use client"
 
 import {CartIcon} from "@/Icons";
-import {animate, AnimatePresence, motion} from "framer-motion";
-import {MutableRefObject, useContext, useRef, useState} from "react";
+import {AnimatePresence, motion} from "framer-motion";
+import {useContext, useRef, useState} from "react";
 import {CloseIcon} from "@nextui-org/shared-icons";
 import {OrderContext} from "@/app/OrderContext";
 import {Button} from "./ui/button";
 import {useOnClickOutside} from "usehooks-ts";
-import {CartRemoveButton, RemoveButton} from "@/components/BuyButton";
+import {CartRemoveButton} from "@/components/BuyButton";
+import Link from "next/link";
+import {ApplicationContext} from "@/app/ApplicationContext";
+import axios from "axios";
+import {host} from "@/env";
 
 export default function CartOverlay() {
   const [open, setOpen] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   const {order} = useContext(OrderContext)
+  const {handleOffCanvas} = useContext(ApplicationContext)
 
   let amount = 0
 
   const handleClick = () => {
     setOpen(!open)
+    handleOffCanvas(open)
   }
 
   const ref = useRef(null)
 
-  useOnClickOutside(ref, () => setOpen(false))
+  useOnClickOutside(ref, () => {
+    setOpen(false)
+  })
+  
+  const handleSubmit = () => {
+    let data: OrderCommitDto = {
+      orderCommitItems: order?.orderContextItems.map((x) =>
+        {
+          let id = x.productMovement.product.id
+          let amountOfElements = x.amountOfElements
+          
+          let smt = {id, amountOfElements}
+          
+          return smt
+        }
+      )
+    }
+    
+    console.log(order?.orderContextItems)
+    
+    axios.post(`${host}/api/order/commitOrder`, data)
+      .then(res => console.log(res.data))
+  }
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="my-auto">
       <div onClick={handleClick} className="cursor-pointer">
         <div className="flex flex-col">
           <div className="mx-auto">
@@ -62,18 +91,18 @@ export default function CartOverlay() {
                               </div>
                               <div className="text-sm my-auto">x</div>
                             </div>
-                            <div className="text-sm my-auto w-[350px] text-nowrap truncate">{orderItem.productMovement.product.title}</div>
-                            <div className="my-auto">{orderItem.sum}р.</div>
+                            <Link href={`../product/${orderItem.productMovement.product.id}`} className="text-sm my-auto text-nowrap w-full truncate text-left">{orderItem.productMovement.product.title}</Link>
+                            <div className="my-auto">{orderItem.sum > 0 ? orderItem.sum + "р." : "-"}</div>
                           </div>
                         ))}
                       </div>
                       <div className="flex flex-col justify-end">
                           <div className="mb-[380px]">
-                              <div className="mb-6 pb-1 border-b-2 border-neutral-200 flex justify-between">
+                              <div className="mb-6 pb-1 border-b-2 border-customDarkerGray flex justify-between">
                                   <span>Итого:</span>
                                   <span className="text-lg font-medium">{order?.totalSum} р.</span>
                               </div>
-                              <Button className="w-full">Оформить заказ</Button>
+                              <Button className="w-full" onClick={handleSubmit}>Оформить заказ</Button>
                           </div>
                       </div>
                   </div>
