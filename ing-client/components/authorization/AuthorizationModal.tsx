@@ -27,7 +27,10 @@ export default function AuthorizationModal() {
 
   const handleLogout = () => {
     axios.get(`${host}/api/auth/signout`)
-      .then()
+      .then(res => {
+        if (res.data)
+          window.location.reload()
+      })
   }
 
   return (

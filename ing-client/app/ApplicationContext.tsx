@@ -32,7 +32,7 @@ export const ApplicationContextProvider = ({children} : any) => {
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(0)
   const [offCanvasOpen, setOffCanvasOpen] = useState(false)
-  const [user, setUser] = useState<User>({isAuthorized: false, name: "", email: "", phone: ""})
+  const [user, setUser] = useState<User>({isAuthorized: false, name: "", email: "", phone: "", userRole: 0})
   
   const router = useRouter()
   const pathName = usePathname()

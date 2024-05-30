@@ -7,6 +7,7 @@ import Container from "@/components/Container";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import {Button} from "@/components/ui/button";
 import {RightArrowWhiteIcon} from "@/Icons";
+import Link from "next/link";
 
 export default async function RecommendedSection(){
   let products: Product[] = []
@@ -19,8 +20,12 @@ export default async function RecommendedSection(){
         <div className="flex justify-between">
           <h2 className="text-4xl mb-8 font-semibold text-start">Мы рекомендуем</h2>
           <Button>
-            Перейти в каталог
-            <RightArrowWhiteIcon/>
+            <Link href="../catalog" className="flex">
+              <div className="my-auto">
+                Перейти в каталог
+              </div>
+              <RightArrowWhiteIcon/>
+            </Link>
           </Button>
         </div>
         <Container>

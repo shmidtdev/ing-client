@@ -1,6 +1,6 @@
 ﻿"use server"
 
-import {useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
 import {host} from "@/env";
 import Container from "@/components/Container";
@@ -8,6 +8,7 @@ import {Button} from "@/components/ui/button";
 import {RightArrowWhiteIcon} from "@/Icons";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import ProductCard from "@/components/ProductCard";
+import Link from "next/link";
 
 export default async function ActionSection(){
   let products: Product[] = []
@@ -19,9 +20,15 @@ export default async function ActionSection(){
       <Container>
         <div className="flex justify-between">
           <h2 className="text-4xl mb-8 font-semibold text-start">Акции и скидки</h2>
-          <Button>
-            Все акции
-            <RightArrowWhiteIcon/>
+          <Button >
+            <Link href="../actions" className="flex">
+              <div className="my-auto h-fit">
+                Все акции
+              </div>
+              <div className="">
+                <RightArrowWhiteIcon/>
+              </div>
+            </Link>
           </Button>
         </div>
         <Container>

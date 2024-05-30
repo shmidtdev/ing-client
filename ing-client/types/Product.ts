@@ -2,7 +2,7 @@
   id: string,
   title: string,
   titleEng: string,
-  images?: string[],
+  images?: any,
   price?: number,
   oldPrice?: number,
   isRecommended: boolean,

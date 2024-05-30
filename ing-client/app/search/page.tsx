@@ -5,16 +5,21 @@ import Container from "@/components/Container";
 import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Filter} from "lucide-react";
 import {Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator} from "@/components/ui/breadcrumb";
+import ProductPagination from "@/components/ProductPagination";
+import * as sea from "node:sea";
+import {NoImageIcon} from "@/Icons";
 
 export default async function Search({params, searchParams}: {
   params: { slug: string },
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   let products: Product[] = []
+  let pages: number = 0
 
-  await axios.get(`${host}/api/product/GetProductsBySubstring?substring=${searchParams["substring"]}`)
+  await axios.get(`${host}/api/product/GetProductsBySubstring?substring=${searchParams["substring"]}&page=${searchParams["page"]}`)
     .then(res => {
-      products = res.data
+      products = res.data.products
+      pages = res.data.pages
     })
   
   let characteristics: Characteristic[] = []; 
@@ -58,7 +63,14 @@ export default async function Search({params, searchParams}: {
               {products.map((product) => (
                 <TableRow key={product.id}>
                   <TableCell>
-                    <img className="w-[40px]" src="/Images/placeholder.png"/>
+                    {product.images.length > 0 && 
+                      <img className="w-[40px]" src={`${host}/storage/${product.images[0].link}`}/>
+                    }
+                    {product.images.length == 0 && 
+                        <div className="w-[40px] object-contain">
+                          <NoImageIcon/>
+                        </div>
+                    }
                   </TableCell>
                   <TableCell>
                     <Link href={`../product/${product.id}`} className="flex gap-4 font-medium hover:text-customBlue">
@@ -83,6 +95,7 @@ export default async function Search({params, searchParams}: {
               ))}
             </TableBody>
           </Table>
+          <ProductPagination pagesAmount={pages} />
         </div>
       </Container>
     </div>

@@ -8,13 +8,13 @@ export default function YandexMap() {
         <div className={'ymaps'}>
           <Map
             state={{
-              center: [48.466551, 135.068710],
+              center: [48.481393, 135.111399],
               zoom: 14
             }}
-            width={1000}
-            height={800}
+            width={1200}
+            height={600}
           >
-            <Placemark geometry={[48.466551, 135.068710]} />
+            <Placemark geometry={[48.481393, 135.1113990]} />
           </Map>
         </div>
       </YMaps>

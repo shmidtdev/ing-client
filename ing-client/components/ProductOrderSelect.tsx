@@ -32,7 +32,7 @@ export default function ProductOrderSelect() {
   return (
     <Suspense>
       <div className="w-fit ml-auto">
-        <Select onValueChange={(x) => handleClick(x)}>
+        <Select onValueChange={(x) => handleClick(x)} disabled>
           <SelectTrigger className="w-[220px]">
             <SelectValue placeholder={orders[orderType]}/>
           </SelectTrigger>

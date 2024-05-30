@@ -1,64 +1,55 @@
 ﻿"use client"
 
-import {z} from "zod";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {Checkbox} from "@/components/ui/checkbox";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {RightArrowWhiteIcon} from "@/Icons";
+import axios from "axios";
+import {host} from "@/env";
+import {createRef, useState} from "react";
 
-const formSchema = z.object({
-  email: z.string().email(),
-})
-
-export default function SubscriptionForm(){
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: ""
-    },
-  })
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+export default function SubscriptionForm() {
+  const [loaded, setLoaded] = useState(false)
+  const [policy, setPolicy] = useState(false);
+  
+  const emailRef = createRef<HTMLInputElement>()
+  
+  const handleSend = () => {
+    let data = {
+      email: emailRef.current?.value
+    }
+    
+    axios.post(`${host}/api/mail/subscribe`, data)
+      .then(res => setLoaded(res.data))
   }
-
-  return(
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <div className="text-white mb-4">Подписывайтесь на наши обновления</div>
-              <div className="flex gap-2">
-                <FormControl>
-                  <Input placeholder="Ваша почта" {...field} />
-                </FormControl>
-                <Button type="submit" variant="customBlue">
-                  <RightArrowWhiteIcon />
-                </Button>
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex">
+  
+  return (
+    <div>
+        <div className="flex gap-3">
+          <Input placeholder="Ваша почта" ref={emailRef}/>
+          {!loaded && 
+            <Button type="submit" variant="customBlue" onClick={handleSend} disabled={!policy}>
+              <RightArrowWhiteIcon/>
+            </Button>
+          }
+          {loaded && 
+            <Button type="submit" variant="customBlue" className="bg-green-500" onClick={handleSend} disabled>
+              <RightArrowWhiteIcon/>
+            </Button>
+          }
+        </div>
+        <div className="flex mt-2">
           <div className="">
-            <Checkbox id="terms" className="border-white"/>
+            <input type="checkbox" id="terms" className="border-white" onInput={() => setPolicy(!policy)}/>
           </div>
           <label
             htmlFor="terms"
             className="text-sm my-auto ml-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-white"
           >
-            Согласен c <Link href="#" className="text-blue-700 underline hover:text-blue-500">политикой конфиденциальности</Link>
+            Согласен c <Link href="../policy" className="text-blue-700 underline hover:text-blue-500">политикой
+            конфиденциальности</Link>
           </label>
         </div>
-      </form>
-    </Form>
+    </div>
   )
 }

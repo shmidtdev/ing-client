@@ -29,8 +29,13 @@ export default function RegistrationForm(){
     }
     
     axios.post(`${host}/api/auth/registration`, data).then(res => {
-      if(res.status === 200)
+      if(res.data){
         setLoaded(true)
+        window.location.reload()
+      }
+      else {
+        
+      }
     })
   }
 
@@ -67,7 +72,7 @@ export default function RegistrationForm(){
           </div>
         </div>
       </form>
-        <Button onClick={handleSubmit} className="w-full mt-4">Отправить</Button>
+      <Button onClick={handleSubmit} className="w-full mt-4">Отправить</Button>
     </div>
   )
 }

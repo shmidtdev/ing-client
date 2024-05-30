@@ -1,1 +1,2 @@
-﻿export const host = "http://localhost"
+﻿//export const host = "https://ing-impgrp.ru"
+export const host = "http://localhost"

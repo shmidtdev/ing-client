@@ -1,5 +1,6 @@
 ﻿import {RightArrowIcon} from "@/Icons";
 import Link from "next/link";
+import {host} from "@/env";
 
 type CategoryTypeProps = {
   category: Category
@@ -23,8 +24,8 @@ export default function CategoryCard({category}: CategoryTypeProps) {
             <RightArrowIcon/>
           </div>
         </div>
-        <div className="absolute w-[200px] right-0 top-0">
-          <img src="http://194.67.105.245:9001/api/v1/buckets/productimages/objects/download?preview=true&prefix=aW1hZ2UucG5n&version_id=null" className=""/>
+        <div className="absolute right-2 top-2 rounded-lg overflow-hidden">
+          <img src={`${host}/storage/categoryimages/${category.nameEng}.png`} className="w-[180px] h-[180px] rounded-lg"/>
         </div>
       </div>
     </Link>

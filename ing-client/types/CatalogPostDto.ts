@@ -1,7 +1,7 @@
 ﻿type CatalogPostDto = {
   categoryName: string,
   params: {key: string, value: string}[],
-  priceMin?: string,
-  priceMax?: string,
+  minPrice?: string,
+  maxPrice?: string,
   page: string
 }

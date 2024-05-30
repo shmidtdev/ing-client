@@ -40,8 +40,8 @@ export default async function CatalogSlugPage({params, searchParams}: {
     // @ts-ignore
     params: searchParams,
     categoryName: params.slug,
-    priceMax: searchParams["priceMax"]?.toString(),
-    priceMin: searchParams["priceMin"]?.toString()
+    maxPrice: searchParams["maxPrice"]?.toString(),
+    minPrice: searchParams["minPrice"]?.toString()
   }
   
   await axios.post(`${host}/api/catalog/getCatalog`, postDto)

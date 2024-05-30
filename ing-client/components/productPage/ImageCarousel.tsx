@@ -3,7 +3,13 @@
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import AddImagesModal from "@/components/AddImagesModal";
 import {ApplicationContext} from "@/app/ApplicationContext";
-import {useContext} from "react";
+import React, {useContext} from "react";
+import {Dialog, DialogContent, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
+import {Button} from "@/components/ui/button";
+import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
+import DragDrop from "@/components/DragDrop";
+import {WishListButton} from "@/app/WishListButton";
+import {host} from "@/env";
 
 type ImageCardProps = {
   image: string
@@ -11,36 +17,50 @@ type ImageCardProps = {
 
 export function ImageCard({image} : ImageCardProps){
   return (
-    <div>
-      <img src={`http://ing-impgrp.ru:9000/${image}`} className=""/>
-    </div>
+    <Dialog>
+      <DialogTrigger asChild>
+          <img src={`${host}/storage/${image}`} className="cursor-pointer h-[250px]"/>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+        </DialogHeader>
+        <DialogBody>
+          <img src={`${host}/storage/${image}`} className="w-[1750px]"/>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   )
 }
 
 type ImageCarouselProps = {
-  productId: string,
+  product: Product,
   images?: any[]
 }
 
-export default function ImageCarousel({productId, images} : ImageCarouselProps){
+export default function ImageCarousel({product, images} : ImageCarouselProps){
   const {user} = useContext(ApplicationContext)
   
   let links = images?.map((x) => x.link)
   
   return (
     <div className="bg-white rounded-lg p-8">
-      {user?.userRole == 1 &&
-        <div className="w-full flex justify-end">
-          <AddImagesModal productId={productId}/>
-        </div>
-      }
-      <div>
-        {links?.length === 0 && 
-            <img src="/Images/placeholder.png" className="w-[450px]"/>
+      <div className="w-full flex justify-end">
+        {user?.userRole == 1 &&
+            <AddImagesModal productId={product.id}/>
         }
-        {links?.length > 0 &&
-          <Carousel className="w-full max-w-xs">
-            <CarouselContent>
+        <div className="ml-4 my-auto w-[42px] h-[42px] bg-white rounded-full border-midgray border-[1px] hover:cursor-pointer hover:border-customRed duration-300">
+          <WishListButton product={product}/>
+        </div>
+      </div>
+      <div>
+        {links?.length === 0 &&
+            <img src="/Images/placeholder.png"/>
+        }
+        {
+          //@ts-ignore
+          links?.length > 0 &&
+            <Carousel className="w-full max-w-xs">
+                <CarouselContent className="w-full">
               {links?.map((image, index) => (
                 <CarouselItem key={index}>
                   <div className="p-1">

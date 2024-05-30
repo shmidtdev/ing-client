@@ -9,37 +9,41 @@ import {
   RightArrowIcon,
   RightArrowWhiteIcon
 } from "@/Icons";
-import ProductCard from "@/components/ProductCard";
-import ArticleCard from "@/components/ArticleCard";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import ContactForm from "@/components/ContactForm";
 import CategoryCarousel from "@/components/sections/CategoryCarousel";
 import RecommendedSection from "@/components/sections/RecommendedSection";
 import ActionSection from "@/components/sections/ActionSection";
 import YandexMap from "@/components/YandexMap";
+import {PhoneCallIcon, MailIcon} from "lucide-react";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center mb-20">
-      <section className="pt-4">
+      <section className="pt-4 ">
         <Container>
           <h1 className="text-[87px] font-semibold text-center pb-6">
             Современные строительные материалы
           </h1>
-          <div className="bg-primary text-white text-md rounded-md relative overflow-hidden">
-            <div>
-              <img src="/Images/glass-building.jpg" className="absolute w-[45%] right-0 top-[-400px]"/>
-            </div>
-            <div className="px-20 py-12 w-[50%] text-sm">
-              <div>
-                Производство компании KIN LONG основано в 1975 году. Сегодня KIN LONG – это МИРОВОЙ ЛИДЕР по
-                производству фурнитуры для остекления. Качество выпускаемой продукции соответствует международным
-                стандартам ISO 9001, BSI, UKAS. Компания KIN LONG является действующим членом CHINA CONSRUCTION METAL
-                STRUCTURE ASSOCIATION и CHINA BUILDING DECORATION ASSOCIATION. В Российской Федерации продукция компании
-                KIN LONG сертифицирована по системе ГОСТ Р.
+          <div className="bg-primary text-white text-md rounded-md relative h-[410px] overflow-hidden">
+            <div className="text-sm flex justify-between">
+              <div className="px-20 py-12 w-[55%]">
+                <div>
+                  Производство компании KIN LONG основано в 1975 году. Сегодня KIN LONG – это МИРОВОЙ ЛИДЕР по
+                  производству фурнитуры для остекления. Качество выпускаемой продукции соответствует международным
+                  стандартам ISO 9001, BSI, UKAS. Компания KIN LONG является действующим членом CHINA CONSRUCTION METAL
+                  STRUCTURE ASSOCIATION и CHINA BUILDING DECORATION ASSOCIATION. В Российской Федерации продукция
+                  компании
+                  KIN LONG сертифицирована по системе ГОСТ Р.
+                </div>
+                <div className="mt-40">
+                  <Button className="text-lg" variant="secondary">
+                    <Link href='../catalog'>Перейти в каталог</Link>
+                  </Button>
+                </div>
               </div>
-              <div className="mt-40">
-                <Button className="text-lg" variant="secondary">Перейти в каталог</Button>
+              <div className="w-[850px] h-[450px] overflow-hidden relative ">
+                <img src="/Images/glass-building.jpg" className="relative top-[-400px] "/>
               </div>
             </div>
           </div>
@@ -87,16 +91,18 @@ export default function Home() {
       <section className="mt-20 w-full">
         <Container>
           <div className="bg-primary w-full rounded-lg text-white m-auto text-3xl text-center relative overflow-hidden">
-            <img src="/Images/office.jpg" className="absolute top-[-300px] w-screen opacity-50"/>
+            <img src="/Images/office.jpg" className="absolute  w-screen opacity-50"/>
             <div className="relative z-10 px-16 py-20 w-[60%] text-start">
               <div className="">Получите персональную скидку при покупке продукции на 100000 р., а также ознакомьтесь с
                 другими акциями
               </div>
-              <Button className="relative z-10 mt-12 flex" variant="secondary">
-                <div>
-                  Перейти в каталог
-                </div>
-                <RightArrowIcon/>
+              <Button className="relative z-10 mt-12" variant="secondary">
+                <Link href="../catalog" className="flex">
+                  <div className="my-auto">
+                    Перейти в каталог
+                  </div>
+                  <RightArrowIcon/>
+                </Link>
               </Button>
             </div>
           </div>
@@ -118,17 +124,42 @@ export default function Home() {
               компании KIN LONG.
             </div>
             <Button className="flex w-fit mt-20 mx-auto">
-              <div>Подробнее</div>
-              <RightArrowWhiteIcon/>
+              <Link href="../about" className="flex">
+                <div className="my-auto">Подробнее</div>
+                <RightArrowWhiteIcon/>
+              </Link>
             </Button>
           </div>
         </Container>
       </section>
-      <section className="mt-20">
+      <section className="mt-20 w-full">
         <Container>
-          <h2 className="text-4xl mb-12 font-semibold text-center">Как нас найти?</h2>
+          <div className="w-full text-left">
+            <h2 className="text-4xl mb-12 font-semibold text-left">Как нас найти?</h2>
+            <div className="flex justify-between">
+              <div className="flex flex-col gap-3">
+                <div className="font-semibold">
+                  ИНЖ ИМПОРТ ГРУПП
+                </div>
+                <div className="flex gap-3">
+                  <span><PhoneCallIcon/></span>
+                  <Link href="tel:89622217756">+7 962 221 77 56</Link>
+                </div>
+                <div className="flex gap-3">
+                  <span><MailIcon/></span>
+                  <Link href="mailto:info@ing-impgrp.ru">info@ing-impgrp.ru</Link>
+                </div>
+                <div>
+                  г. Хабаровск, проспект 60-летия октября, д. 156 , пом. 3.1
+                </div>
+                <div>
+                  Режим работы 10:00 - 19:00 (пн-пт)
+                </div>
+              </div>
+            <YandexMap/>
+            </div>
+          </div>
         </Container>
-        <YandexMap/>
       </section>
       {/*<section className="mt-20 w-full">*/}
       {/*  <Container>*/}

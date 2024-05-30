@@ -38,7 +38,7 @@ export default async function CatalogPage({params, searchParams}: {
     page: searchParams["page"]?.toString() ?? "1",
     // @ts-ignore
     params: searchParams,
-    categoryName: params.slug,
+    categoryName: "catalog",
     priceMax: searchParams["priceMax"]?.toString(),
     priceMin: searchParams["priceMin"]?.toString()
   }

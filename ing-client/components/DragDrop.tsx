@@ -38,6 +38,7 @@ function DragDrop({productId} : IDropProps) {
     let images : string [] = []
     
     for(let i = 0; i < files.length; i++){
+      //@ts-ignore
       images.push(await readFileDataAsBase64(files[i]))
     }
     

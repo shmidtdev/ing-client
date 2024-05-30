@@ -3,6 +3,8 @@
 import Link from "next/link";
 import {BuyButton} from "@/components/BuyButton";
 import {WishListButton} from "@/app/WishListButton";
+import {NoImageIcon} from "@/Icons";
+import {host} from "@/env";
 
 type ProductCardProps = {
   product: Product
@@ -15,8 +17,15 @@ export default function ProductCard({product} : ProductCardProps){
         <WishListButton product={product}/>
       </div>
       <Link href={`../product/${product.id}`} className="hover:opacity-70 duration-300">
-        <div className="bg-customGray w-full rounded-lg">
-          <img src="/Images/placeholder.png" className="mx-auto"/>
+        <div className="bg-customGray w-full rounded-lg p-6">
+          {product.images?.length > 0 &&
+            <img src={`${host}/storage/${product?.images[0].link}`} className="mx-auto rounded-lg w-[200px] h-[200px]"/>
+          }
+          {(product?.images === null || product.images.length === 0) &&
+              <div className="flex justify-between h-[200px]">
+                  <NoImageIcon />
+              </div>
+          }
         </div>
         <div className="p-2">
           <div className="font-semibold text-lg">{product.title}</div>

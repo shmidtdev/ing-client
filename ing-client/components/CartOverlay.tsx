@@ -2,7 +2,7 @@
 
 import {CartIcon} from "@/Icons";
 import {AnimatePresence, motion} from "framer-motion";
-import {useContext, useRef, useState} from "react";
+import React, {createRef, useContext, useRef, useState} from "react";
 import {CloseIcon} from "@nextui-org/shared-icons";
 import {OrderContext} from "@/app/OrderContext";
 import {Button} from "./ui/button";
@@ -12,13 +12,25 @@ import Link from "next/link";
 import {ApplicationContext} from "@/app/ApplicationContext";
 import axios from "axios";
 import {host} from "@/env";
+import {Dialog, DialogContent, DialogHeader, DialogTrigger} from "@/components/ui/dialog";
+import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import SignInForm from "@/components/authorization/SigninForm";
+import RegistrationForm from "@/components/authorization/RegistrationForm";
+import {Input} from "@/components/ui/input";
 
 export default function CartOverlay() {
   const [open, setOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [buttonDisabled, setButtonDisabled] = useState(true)
 
   const {order} = useContext(OrderContext)
   const {handleOffCanvas} = useContext(ApplicationContext)
+
+  const emailRef = createRef<HTMLInputElement>()
+  const nameRef = createRef<HTMLInputElement>()
+  const phoneRef = createRef<HTMLInputElement>()
 
   let amount = 0
 
@@ -35,6 +47,10 @@ export default function CartOverlay() {
   
   const handleSubmit = () => {
     let data: OrderCommitDto = {
+      email: emailRef.current?.value,
+      name: nameRef.current?.value,
+      phone: phoneRef.current?.value,
+      //@ts-ignore
       orderCommitItems: order?.orderContextItems.map((x) =>
         {
           let id = x.productMovement.product.id
@@ -47,10 +63,8 @@ export default function CartOverlay() {
       )
     }
     
-    console.log(order?.orderContextItems)
-    
     axios.post(`${host}/api/order/commitOrder`, data)
-      .then(res => console.log(res.data))
+      .then(res => setLoaded(res.data))
   }
 
   return (
@@ -65,6 +79,43 @@ export default function CartOverlay() {
           </div>
         </div>
       </div>
+      <Dialog open={dialogOpen} onOpenChange={x => {
+        setDialogOpen(x)
+        setButtonDisabled(true)
+      }}>
+        <DialogContent>
+          <DialogHeader>
+          </DialogHeader>
+          <DialogBody>
+            <form className="flex flex-col gap-3">
+              <Input placeholder="Ваша почта" ref={emailRef}/>
+              <Input placeholder="Ваше имя" ref={nameRef}/>
+              <Input placeholder="Ваш телефон" ref={phoneRef}/>
+              <div>
+                <div className="flex">
+                  <div className="">
+                    <input type="checkbox" id="terms" onInput={() => setButtonDisabled(!buttonDisabled)}/>
+                  </div>
+                  <label
+                    htmlFor="terms"
+                    className="text-sm my-auto ml-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Согласен c <Link href="../policy"
+                                     className="text-blue-700 underline hover:text-blue-500">политикой
+                    конфиденциальности</Link>
+                  </label>
+                </div>
+              </div>
+            </form>
+            {!loaded && 
+              <Button onClick={handleSubmit} className="w-full mt-4" disabled={buttonDisabled}>Отправить</Button>
+            }
+            {loaded && 
+              <Button onClick={handleSubmit} className="w-full mt-4 bg-green-500" disabled={true}>Успешно доставлено</Button>
+            }
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
       <div className="absolute -z-50 top-0 right-0">
         <AnimatePresence>
           {open &&
@@ -102,7 +153,10 @@ export default function CartOverlay() {
                                   <span>Итого:</span>
                                   <span className="text-lg font-medium">{order?.totalSum} р.</span>
                               </div>
-                              <Button className="w-full" onClick={handleSubmit}>Оформить заказ</Button>
+                          <Button className="w-full" onClick={() => {
+                            setDialogOpen(true)
+                            handleOffCanvas(false)
+                            setOpen(false)}}> Оформить заказ</Button>
                           </div>
                       </div>
                   </div>

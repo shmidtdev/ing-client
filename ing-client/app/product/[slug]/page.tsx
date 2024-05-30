@@ -15,6 +15,7 @@ import {BuyButton} from "@/components/BuyButton";
 import RecommendedSection from "@/components/sections/RecommendedSection";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/components/ui/carousel";
 import ProductCard from "@/components/ProductCard";
+import {WishListButton} from "@/app/WishListButton";
 
 export default async function ProductPage({params, searchParams}: {
   params: { slug: string },
@@ -25,7 +26,7 @@ export default async function ProductPage({params, searchParams}: {
       id: "",
       title: "",
       titleEng: "",
-      imageLinks: undefined,
+      images: undefined,
       price: undefined,
       oldPrice: undefined,
       isRecommended: false,
@@ -84,7 +85,7 @@ export default async function ProductPage({params, searchParams}: {
         </div>
         <div className="flex justify-between mt-8">
           <div className="w-[70%]">
-            <ImageCarousel productId={product.id} images={product.images}/>
+            <ImageCarousel product={product} images={product.images}/>
             <div className="w-full bg-white rounded-lg my-8 p-8">
               <h3 className="text-2xl mb-6">Характеристики</h3>
               {product.characteristics.map((characteristic) => (
